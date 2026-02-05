@@ -37,8 +37,6 @@ app.use("/api/message", messageRouter);
 
 app.use("/api/notifications", notificationRouter);
 
-app.use(NotFound);
-
 if (process.env.NODE_ENV === "production") {
   const __dirname = path.resolve();
 
@@ -48,6 +46,8 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html")),
   );
 }
+
+app.use(NotFound);
 
 io.on("connection", (socket) => {
   console.log("Connected to Socket.io");
