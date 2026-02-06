@@ -2,7 +2,6 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import { NotFound } from "./middleware/error.middleware.js";
-import cookieParser from "cookie-parser";
 import userRouter from "./routes/userRoutes.js";
 import chatRouter from "./routes/chatRoutes.js";
 import messageRouter from "./routes/messageRoutes.js";
@@ -26,8 +25,6 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
 connectDB();
-
-app.use(cookieParser());
 
 app.use("/api/user", userRouter);
 

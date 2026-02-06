@@ -4,6 +4,7 @@ import { chatContext } from "../../AppContext/context";
 import { useEffect, useState } from "react";
 import ProfileModal from "./ProfileModal";
 import { getAllNotifications } from "../../api/notification.api";
+import { toast } from "react-toastify";
 
 const TopBar = ({ setUsersDrawer, handleAccessChat, handleAccessGroup }) => {
   const {
@@ -30,9 +31,6 @@ const TopBar = ({ setUsersDrawer, handleAccessChat, handleAccessGroup }) => {
   const handleNotificationClick = (notification) => {
     if (notification.chat.isGroupChat) handleAccessGroup(notification.chat._id);
     else handleAccessChat(notification.message.senderName._id);
-    setNotifications((prev) =>
-      prev.filter((n) => n.message.chat._id !== notification.message.chat._id),
-    );
   };
 
   const fetchNotifications = async () => {
@@ -121,19 +119,13 @@ const TopBar = ({ setUsersDrawer, handleAccessChat, handleAccessGroup }) => {
             e.stopPropagation();
             setActiveMenu(activeMenu === "profile" ? null : "profile");
           }}
-          className="w-10 h-10 rounded-full bg-black flex items-center justify-center overflow-hidden"
+          className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden"
         >
-          {user?.profile_pic ? (
-            <img
-              src={user.profile_pic}
-              alt="avatar"
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <span className="text-white font-semibold">
-              {user?.username?.[0]?.toUpperCase()}
-            </span>
-          )}
+          <img
+            src={user.profile_pic}
+            alt="avatar"
+            className="w-full h-full object-cover"
+          />
         </button>
 
         <MenuPopover

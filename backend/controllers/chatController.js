@@ -48,7 +48,7 @@ export const accessChat = async (req, res) => {
         "-password",
       );
 
-      res.status.json(fullChat);
+      res.status(200).json(fullChat);
     } catch (error) {
       res.status(400).json({
         success: false,
@@ -233,7 +233,7 @@ export const removeUser = async (req, res) => {
     });
     return;
   }
-  
+
   try {
     const group = await Chat.findById(chatId);
     const loggedInUser = req.user._id.toString();

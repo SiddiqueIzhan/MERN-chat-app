@@ -66,7 +66,7 @@ const SignUpForm = () => {
         username: formData.username,
         email: formData.email,
         password: formData.password,
-        profile_pic: pic,
+        profile_pic: pic ? pic : undefined,
       });
 
       toast.success(resp.data.message);

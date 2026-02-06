@@ -4,6 +4,7 @@ import { chatContext } from "../../AppContext/context";
 import axios from "axios";
 import UserListItem from "./UserListItem";
 import { searchUsers } from "../../api/user.api";
+import { toast } from "react-toastify";
 
 const SideDrawer = ({ setUsersDrawer, handleAccessChat }) => {
   const [query, setQuery] = useState("");
@@ -32,8 +33,8 @@ const SideDrawer = ({ setUsersDrawer, handleAccessChat }) => {
     }
   };
 
-  const handleFunction = () => {
-    handleAccessChat(user._id);
+  const handleFunction = (u) => {
+    handleAccessChat(u._id);
     setFetchAgain(!fetchAgain);
     setUsersDrawer(false);
   };
@@ -80,7 +81,7 @@ const SideDrawer = ({ setUsersDrawer, handleAccessChat }) => {
               <UserListItem
                 key={u._id}
                 user={u}
-                handleFunction={handleFunction}
+                handleFunction={() => handleFunction(u)}
               />
             ))}
           </div>

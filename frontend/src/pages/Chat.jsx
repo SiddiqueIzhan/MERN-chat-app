@@ -5,7 +5,7 @@ import MyChats from "../components/miscallenious/MyChats";
 import ChatsBox from "../components/miscallenious/ChatsBox";
 import TopBar from "../components/miscallenious/TopBar";
 import SideDrawer from "../components/miscallenious/SideDrawer";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { accessChat, getAllChats, getAllChatsById } from "../api/chat.api";
 import { deleteNotifications } from "../api/notification.api";
 

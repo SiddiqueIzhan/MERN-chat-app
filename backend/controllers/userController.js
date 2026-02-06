@@ -1,16 +1,46 @@
 import { generateToken } from "../config/generateToken.js";
 import User from "../models/userModel.js";
+import z from "zod";
+
+const emailSchema = z.string().trim().email({ message: "Invalid email" });
+
+const passwordSchema = z
+  .string()
+  .trim()
+  .min(6, { message: "Password must be at least 6 characters" })
+  .refine((val) => !val.includes(" "), {
+    message: "Password cannot contain spaces",
+  });
+
+const registerSchema = z.object({
+  username: z
+    .string()
+    .trim()
+    .min(3, "Username must be at least 3 characters")
+    .max(30, { message: "Username must be maximum 30 characters" })
+    .regex(/^[A-Za-z]/, { message: "Username must start with an alphabet" }),
+  email: emailSchema,
+  password: passwordSchema,
+  profile_pic: z.string().optional(),
+});
+
+const loginSchema = z.object({
+  email: emailSchema,
+  password: passwordSchema,
+});
 
 export const registerUser = async (req, res) => {
-  const { username, email, password, profile_pic } = req.body;
+  const result = registerSchema.safeParse(req.body);
+  console.log(result);
 
-  if (!username && !email && !password) {
-    res.status(400).json({
+  if (!result.success) {
+    return res.status(400).json({
       success: false,
-      message: "Please Fill all the fields",
+      message: result.error.issues[0].message,
     });
-    return;
   }
+
+  const { username, email, password, profile_pic } = result.data;
 
   const user = await User.findOne({ email: email });
 
@@ -37,22 +67,21 @@ export const registerUser = async (req, res) => {
 };
 
 export const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  const result = loginSchema.safeParse(req.body);
 
-  if (!email && !password) {
-    res.status(400).json({
+  if (!result.success) {
+    return res.status(400).json({
       success: false,
-      message: "Please Fill all the fields",
+      message: result.error.issues[0].message,
     });
-    return;
   }
+
+  const { email, password } = result.data;
 
   const user = await User.findOne({ email: email });
 
   if (user && (await user.verifyPassword(password))) {
     const token = generateToken({ id: user._id });
-
-    res.cookie("access_token", token);
 
     return res.status(201).json({
       success: true,
@@ -61,7 +90,7 @@ export const loginUser = async (req, res) => {
         _id: user._id,
         username: user.username,
         email: email,
-        profile_pic: user.profile_pic,
+        profile_pic: user.profile_pic || undefined,
         token: token,
       },
     });

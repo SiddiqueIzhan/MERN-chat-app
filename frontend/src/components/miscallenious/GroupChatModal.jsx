@@ -287,7 +287,11 @@ const GroupChatModal = ({ setOpen, isEdit, selectedChat }) => {
           {loading && <p className="text-sm text-gray-500">Searching...</p>}
           {users.length ? (
             users.map((u) => (
-              <UserListItem user={u} handleFunction={() => handleAddUser(u)} />
+              <UserListItem
+                key={u._id}
+                user={u}
+                handleFunction={() => handleAddUser(u)}
+              />
             ))
           ) : (
             <span className="text-sm text-center">{users.message}</span>
@@ -300,7 +304,7 @@ const GroupChatModal = ({ setOpen, isEdit, selectedChat }) => {
             if (isEdit) handleExitGroup(user);
             else handleCreateGroup();
           }}
-          className="w-full bg-black text-white py-2 rounded-lg mt-4"
+          className={`w-full ${isEdit ? "bg-red-500" : "bg-black"} text-white py-2 rounded-lg mt-4`}
         >
           {isEdit ? "Exit Group" : "Create Group"}
         </button>

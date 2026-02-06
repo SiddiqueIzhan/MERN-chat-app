@@ -11,6 +11,7 @@ import Lottie from "lottie-react";
 import animationData from "../../animations/Typing.json";
 import { postNotification } from "../../api/notification.api";
 import { FaArrowLeft } from "react-icons/fa6";
+import { toast } from "react-toastify";
 
 const ChatsBox = () => {
   const [openGroupModal, setOpenGroupModal] = useState(false);
